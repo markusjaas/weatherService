@@ -2,16 +2,12 @@
 
 angular.module('weatherServiceApp', [])
 .controller('weatherServiceController', function($scope, $http){
-    $scope.onLoadSearch() = function() {
-    	$scope.$log = log("queryWeather");
+    $scope.onLoad() = function() {
 
-    	queryWeather()
+    	queryWeather();
+    	getFavourites();
     }
-    $scope.onLoadFavourites = function() {
-    	log("queryWeather");
-    	getFavourites()
-     }
-
+    
     $scope.location = "Oulu";
 
     function queryWeather(){

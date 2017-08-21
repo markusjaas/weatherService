@@ -1,15 +1,15 @@
  <!DOCTYPE html>
 <html data-ng-app="weatherServiceApp">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-<script src="js/app.js"></script>
 <link rel="stylesheet" href="css/weatherservice.css"/>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <body>
+<script src="js/app.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 
-  <div  class="wrap">
+  <div  class="wrap" data-ng-init="onLoad()" data-ng-controller="weatherServiceController">
 	<h1>Weather service</h1>
-   	<div class="search" data-ng-init="onLoadSearch()">
+   	<div class="search" >
       <input type="text" class="searchTerm" placeholder="Enter city / location( e.g Oulu)">
       <button type="submit" onclick="select()" class="searchButton">Search</button>
    	</div>
