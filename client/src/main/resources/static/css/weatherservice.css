@@ -1,0 +1,113 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+body{
+  background: #f2f2f2;
+  font-family: 'Open Sans', sans-serif;
+}
+
+h1 {
+	text-align: center;
+    margin: 50px auto;
+    display: block;
+}
+
+.search {
+  width: 100%;
+  position: relative
+}
+
+.searchTerm {
+  float: left;
+  width: 100%;
+  border: 3px solid #00B4CC;
+  padding: 5px;
+  height: 40px;
+  border-radius: 5px;
+  outline: none;
+  color: #9DBFAF;
+}
+
+.searchTerm:focus{
+  color: #00B4CC;
+}
+
+.searchButton {
+  position: absolute;  
+  right: -135px;
+  width: 120px;
+  height: 40px;
+  border: 1px solid #00B4CC;
+  background: #00B4CC;
+  text-align: center;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+}
+.weather.panel {
+    /*font-weight: lighter !important;*/
+}
+
+.weather.panel .panel-heading {
+    font-weight: lighter !important;
+    font-size: 1.2em;
+}
+
+.weather.panel .panel-footer {
+    font-weight: lighter !important;
+}
+
+.removeButton{
+  width: 60px;
+  height: 20px;
+  background: #DC143C;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 10px;
+	
+}
+table tr:nth-child(even) {
+    background-color: #eee;
+}
+table tr:nth-child(odd) {
+   background-color:#fff;
+}
+table {
+    background-color: #00B4CC;
+    color: black;
+    
+}
+
+.searchAgainButton{
+  width: 50px;
+  height: 20px;
+  background: #00B4CC;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 10px;
+	
+}
+
+.addButton {
+  width: 120px;
+  height: 40px;
+  border: 1px solid #7CFC00;
+  background: #7CFC00;
+  text-align: center;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+
+/*Resize the wrap to see the search bar change!*/
+.wrap{
+  width: 30%;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
