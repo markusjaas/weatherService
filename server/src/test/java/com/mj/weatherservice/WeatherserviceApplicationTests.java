@@ -67,7 +67,7 @@ public class WeatherserviceApplicationTests {
 		
 		String r = response.getBody();
 		for(String assertString :assertStrings){
-			Assert.assertTrue(r.contains(assertString));
+			Assert.assertTrue(assertString.contains(r));
 		}
 		assert(response.getStatusCode() == HttpStatus.OK);
 	}
@@ -79,10 +79,8 @@ public class WeatherserviceApplicationTests {
 				createRequestURL("/weatherservice/search/helsin"),
 				HttpMethod.GET, entity, String.class);
 		String r = response.getBody();
-		System.out.println(r);
 		for(String assertString :assertStrings){
-			System.out.println(assertString);
-			Assert.assertTrue(r.contains(assertString));
+			Assert.assertTrue(assertString.contains(r));
 		}
 		assert(response.getStatusCode() == HttpStatus.OK);
 	}
@@ -101,7 +99,7 @@ public class WeatherserviceApplicationTests {
 		
 		String r = response.getBody();
 		for(String assertString :assertStrings){
-			Assert.assertTrue(r.contains(assertString));
+			Assert.assertTrue(assertString.contains(r));
 		}
 		assert(response.getStatusCode() == HttpStatus.OK);
 	}
@@ -118,7 +116,7 @@ public class WeatherserviceApplicationTests {
 		
 		String r = response.getBody();
 		for(String assertString :assertStrings){
-			Assert.assertTrue(r.contains(assertString));
+			Assert.assertTrue(assertString.contains(r));
 		}
 		assert(response.getStatusCode() == HttpStatus.OK);
 	}
@@ -269,5 +267,25 @@ public class WeatherserviceApplicationTests {
 		}
 		return assertStrings;
 	}
+	/*private List<String> retrieveAsserString(String location, String lang) throws JSONException {
+		ResponseEntity<String> response = restTemplate.exchange(
+				baseUrlFind + location + "&lang="+lang,
+				HttpMethod.GET, entity, String.class);
+		JSONObject assertData = new JSONObject(response.getBody());
+		JSONArray locations = assertData.getJSONArray("list");
+		String assertString = "[";
+		for(int i = 0; i < locations.length() ;i++){
+			String name = locations.getJSONObject(i).getString("name");
+			String temp = locations.getJSONObject(i).getJSONObject("main").get("temp").toString();
+			String desc = locations.getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("description");
+			String country = locations.getJSONObject(i).getJSONObject("sys").get("country").toString();
+
+			String assertString = "{\"locationName\":\""+ name + "\",\"country\":\""+ country +"\",\"temperature\":\""+ temp 
+				+"\",\"description\":\""+ desc + "\"}";
+			assertString += assertString;
+			if()
+		}
+		return assertStrings;
+	}*/
 
 }

@@ -3,12 +3,12 @@ package com.mj.weatherservice.controller;
 
 import java.util.List;
 
-import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +22,7 @@ import com.mj.weatherservice.model.Location;
 import com.mj.weatherservice.model.WeatherResponse;
 import com.mj.weatherservice.openweathermapservice.OpenWeatherMapService;
 
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/weatherservice")
 public class WeatherServiceController {
@@ -45,7 +45,7 @@ public class WeatherServiceController {
     	}
     	try{
     		logger.debug("Searching weather information for "+ location);
-    		return new ResponseEntity<List<WeatherResponse>>(openWeatherMapService.getWeather(location, lang), HttpStatus.OK);
+    		return new ResponseEntity<WeatherResponse>(openWeatherMapService.getWeather(location, lang), HttpStatus.OK);
     	}catch (Exception e) {
     		return new ResponseEntity<CustomError>(new CustomError("Could not retrieve weather information to location " +
     				location), HttpStatus.BAD_REQUEST);

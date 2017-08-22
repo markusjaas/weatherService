@@ -28,31 +28,28 @@ public class OpenWeatherMapServiceImpl implements OpenWeatherMapService{
     private static final String baseUrlFind = "http://api.openweathermap.org/data/2.5/find?APPID=120a09bd82b40352968281a2c6db1314&type=like&mode=xml&units=metric&q=";
     
     
-    public List<WeatherResponse> getWeather(String location, String lang) throws Exception{
+    public WeatherResponse getWeather(String location, String lang) throws Exception{
     	RestTemplate restTemplate = new RestTemplate();
 		String queryUrl = baseUrlFind + location + "&lang="+lang;
     	return parseXml(restTemplate.getForObject(queryUrl, String.class));
 		
     }
     
-    private  List<WeatherResponse> parseXml(String xml) throws ParserConfigurationException, SAXException, IOException{
+    private  WeatherResponse parseXml(String xml) throws ParserConfigurationException, SAXException, IOException{
     	DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
     	Document doc = db.parse(new InputSource(new StringReader(xml)));
     	NodeList locations = doc.getElementsByTagName("item");
-    	List<WeatherResponse> responseList = new ArrayList<WeatherResponse>();
-    	for (int i = 0; i < locations.getLength(); i++) {
-    	    Element location = (Element) locations.item(i);
-    	    
-    	    String locationName = location.getElementsByTagName("city").item(0).getAttributes().getNamedItem("name").getNodeValue();
-    	    String country = location.getElementsByTagName("country").item(0).getTextContent();
-    	    String temperature = location.getElementsByTagName("temperature").item(0).getAttributes().getNamedItem("value").getNodeValue();
-    	    String description = location.getElementsByTagName("weather").item(0).getAttributes().getNamedItem("value").getNodeValue();
-    	    WeatherResponse wr = new WeatherResponse(locationName, country, temperature, description);
-    	    responseList.add(wr);
-    	    
-    	}
+    	// we only care about the best match
     	
-    	return responseList;
+    	Element location = (Element) locations.item(1);
+    	    
+	    String locationName = location.getElementsByTagName("city").item(0).getAttributes().getNamedItem("name").getNodeValue();
+	    String country = location.getElementsByTagName("country").item(0).getTextContent();
+	    String temperature = location.getElementsByTagName("temperature").item(0).getAttributes().getNamedItem("value").getNodeValue();
+	    String description = location.getElementsByTagName("weather").item(0).getAttributes().getNamedItem("value").getNodeValue();
+	    WeatherResponse wr = new WeatherResponse(locationName, country, temperature, description);
+    	    
+    	return wr;
     }
     
  

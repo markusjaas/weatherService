@@ -1,17 +1,18 @@
  <!DOCTYPE html>
-<html data-ng-app="weatherServiceApp">
+<html>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="css/weatherservice.css"/>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<body>
-<script src="js/app.js"></script>
+<body data-ng-app="weatherServiceApp">
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="js/app.js"></script>
 
-  <div  class="wrap" data-ng-init="onLoad()" data-ng-controller="weatherServiceController">
+
+  <div  class="wrap"  data-ng-controller="weatherServiceController" data-ng-init="onLoad()">
 	<h1>Weather service</h1>
    	<div class="search" >
-      <input type="text" class="searchTerm" placeholder="Enter city / location( e.g Oulu)">
-      <button type="submit" onclick="select()" class="searchButton">Search</button>
+      <input type="text" class="searchTerm" placeholder="Enter city / location( e.g Oulu)" data-ng-model="locationModel.city" />
+      <button type="submit" data-ng-click="select()" class="searchButton">Search</button>
    	</div>
    	<div class="panel panel-info">
       <div class="panel-heading">{{weather.locationName}}, {{weather.country}}</div>
