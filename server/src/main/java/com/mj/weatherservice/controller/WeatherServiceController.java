@@ -59,7 +59,7 @@ public class WeatherServiceController {
     	return new ResponseEntity<List<Location>>(favouritesService.getFavourites(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/favourites/", method = RequestMethod.POST, produces={"application/json"} )
+    @RequestMapping(value = "/favourites/", method = RequestMethod.PUT, produces={"application/json"} )
     public ResponseEntity<Location> addFavourite(@RequestBody Location location) {
     	favouritesService.addFavourite(location);
     	//This is designed to add favourite if it does not exists already.
@@ -79,6 +79,6 @@ public class WeatherServiceController {
     public ResponseEntity<Location> deleteFavourite(@PathVariable("location") String locationId, @RequestBody Location location) {
     	favouritesService.deleteFavourite(location);
     	
-        return new ResponseEntity<Location>(location, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<Location>(location, HttpStatus.OK);
     }
 }

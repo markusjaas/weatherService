@@ -78,6 +78,11 @@ table {
     color: black;
     
 }
+.error{
+	text-align: right;
+	color: red;
+	
+}
 
 .searchAgainButton{
   width: 50px;
@@ -101,7 +106,17 @@ table {
   cursor: pointer;
   font-size: 20px;
 }
-
+.deleteAllButton {
+  width: 120px;
+  height: 40px;
+  border: 1px solid #DC143C;
+  background: #DC143C;
+  text-align: center;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+}
 
 /*Resize the wrap to see the search bar change!*/
 .wrap{

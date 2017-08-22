@@ -14,31 +14,28 @@
       <input type="text" class="searchTerm" placeholder="Enter city / location( e.g Oulu)" data-ng-model="locationModel.city" />
       <button type="submit" data-ng-click="select()" class="searchButton">Search</button>
    	</div>
+   	<p class="error" data-ng-show="error">Location not found!</p>
    	<div class="panel panel-info">
       <div class="panel-heading">{{weather.locationName}}, {{weather.country}}</div>
       <div class="panel-body">
-	  	<p>25 &#176;C</p> 
-        <p>pilvistä</p>
+	  	<p>{{weather.temperature | number:1}} &#176;C</p> 
+        <p>{{weather.description}}</p>
 	  </div>
     </div>
-    <button type="submit" class="addButton">Add
+    <button type="submit" data-ng-click="addFavourite()" class="addButton">Add
      </button>
     <h2>Favourites</h2>
   	 <table style="width:100%" border="1" >
 	  <tr>
 	    <th colspan="3">Favourite Locations</th>
 	  </tr>
-	  <tr>
-	    <td>Oulu</td>
-	    <td><button type="submit" class="removeButton">Remove</button></td>
-	    <td><button type="submit" class="searchAgainButton">Search</button></td>
-	  </tr>
-	  <tr>
-	    <td>Kärsämäki</td>
-	    <td><button type="submit" class="removeButton">Remove</button></td>
-	    <td><button type="submit" class="searchAgainButton">Search</button></td>
-	  </tr>
+	  <tr data-ng-repeat="x in favourites">
+    	<td>{{ x.locationName }}</td>
+		<td><button type="submit" data-ng-click="removeFavourite($index)" class="removeButton">Remove</button></td>
+	    <td><button type="submit" data-ng-click="searchFavourite($index)" class="searchAgainButton">Search</button></td>
+      </tr>
 	</table> 
+     </button>
 </div>
 
 
