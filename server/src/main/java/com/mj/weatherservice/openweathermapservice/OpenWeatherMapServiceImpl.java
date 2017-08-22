@@ -2,8 +2,6 @@ package com.mj.weatherservice.openweathermapservice;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -41,7 +39,7 @@ public class OpenWeatherMapServiceImpl implements OpenWeatherMapService{
     	NodeList locations = doc.getElementsByTagName("item");
     	// we only care about the best match
     	
-    	Element location = (Element) locations.item(1);
+    	Element location = (Element) locations.item(0);
     	    
 	    String locationName = location.getElementsByTagName("city").item(0).getAttributes().getNamedItem("name").getNodeValue();
 	    String country = location.getElementsByTagName("country").item(0).getTextContent();

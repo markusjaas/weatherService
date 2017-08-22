@@ -1,7 +1,6 @@
 package com.mj.weatherservice;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -9,7 +8,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -45,11 +43,11 @@ public class WeatherserviceApplicationTests {
 
 		restTemplate.exchange(
 				createRequestURL("/weatherservice/favourites/"),
-				HttpMethod.POST, new HttpEntity<Location>(new Location("Oulu"), headers), String.class);
+				HttpMethod.PUT, new HttpEntity<Location>(new Location("Oulu"), headers), String.class);
 
 		restTemplate.exchange(
 				createRequestURL("/weatherservice/favourites/"),
-				HttpMethod.POST, new HttpEntity<Location>(new Location("Kärsämäki"), headers), String.class);
+				HttpMethod.PUT, new HttpEntity<Location>(new Location("Kärsämäki"), headers), String.class);
 		
 	}
 	
@@ -66,9 +64,23 @@ public class WeatherserviceApplicationTests {
 				HttpMethod.GET, entity, String.class);
 		
 		String r = response.getBody();
-		for(String assertString :assertStrings){
-			Assert.assertTrue(assertString.contains(r));
-		}
+		Assert.assertTrue(listContains(assertStrings, r));
+
+		assert(response.getStatusCode() == HttpStatus.OK);
+	}
+	
+	@Test
+	public void testSuccessfulWeatherSearchUrlDecoded() throws JSONException {
+ 
+		List<String> assertStrings = retrieveAsserString("Kärsämäki","fi");
+
+		ResponseEntity<String> response = restTemplate.exchange(
+				createRequestURL("/weatherservice/search/K%C3%A4rs%C3%A4m%C3%A4ki"),
+				HttpMethod.GET, entity, String.class);
+		
+		String r = response.getBody();
+		Assert.assertTrue(listContains(assertStrings, r));
+
 		assert(response.getStatusCode() == HttpStatus.OK);
 	}
 	
@@ -79,9 +91,8 @@ public class WeatherserviceApplicationTests {
 				createRequestURL("/weatherservice/search/helsin"),
 				HttpMethod.GET, entity, String.class);
 		String r = response.getBody();
-		for(String assertString :assertStrings){
-			Assert.assertTrue(assertString.contains(r));
-		}
+		Assert.assertTrue(listContains(assertStrings, r));
+
 		assert(response.getStatusCode() == HttpStatus.OK);
 	}
 	
@@ -98,10 +109,19 @@ public class WeatherserviceApplicationTests {
 				HttpMethod.GET, entity, String.class);
 		
 		String r = response.getBody();
-		for(String assertString :assertStrings){
-			Assert.assertTrue(assertString.contains(r));
-		}
+		
+		Assert.assertTrue(listContains(assertStrings, r));
+		
 		assert(response.getStatusCode() == HttpStatus.OK);
+	}
+	
+	private boolean listContains(List<String> l, String s){
+		for(String str : l){
+			if(str.equals(s)){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	@Test
@@ -115,9 +135,8 @@ public class WeatherserviceApplicationTests {
 				HttpMethod.GET, entity, String.class);
 		
 		String r = response.getBody();
-		for(String assertString :assertStrings){
-			Assert.assertTrue(assertString.contains(r));
-		}
+		Assert.assertTrue(listContains(assertStrings, r));
+		
 		assert(response.getStatusCode() == HttpStatus.OK);
 	}
 	
@@ -145,7 +164,6 @@ public class WeatherserviceApplicationTests {
 				HttpMethod.GET, entity, String.class);
 		
 		assert(response.getStatusCode() == HttpStatus.OK);
-		
 		JSONAssert.assertEquals(assertString, response.getBody(), false);
 	}
 	
@@ -172,25 +190,21 @@ public class WeatherserviceApplicationTests {
 	@Test
 	public void testAddFavourite() throws JSONException {
 		//dummy favourites are loaded to favourites when server is started
-		String assertString = "{\"locationName\":\"Helsinki\"}";
 		Location loc = new Location("Helsinki");
 		HttpEntity<Location> postEntity = new HttpEntity<Location>(loc, headers);
 
 		ResponseEntity<String> response = restTemplate.exchange(
 				createRequestURL("/weatherservice/favourites/"),
-				HttpMethod.POST, postEntity, String.class);
-		JSONAssert.assertEquals(assertString, response.getBody(), false);
-		
+				HttpMethod.PUT, postEntity, String.class);
 		assert(response.getStatusCode() == HttpStatus.CREATED);
 		
-	    assertString = "[{\"locationName\":\"Oulu\"},{\"locationName\":\"Kärsämäki\"},{\"locationName\":\"Helsinki\"}]";
+	    String assertString = "[{\"locationName\":\"Oulu\"},{\"locationName\":\"Kärsämäki\"},{\"locationName\":\"Helsinki\"}]";
 		//assert that favourite is actually added
 		response = restTemplate.exchange(
 				createRequestURL("/weatherservice/favourites/"),
 				HttpMethod.GET, entity, String.class);
 		
 		assert(response.getStatusCode() == HttpStatus.OK);
-		
 		JSONAssert.assertEquals(assertString, response.getBody(), false);
 	}
 	
@@ -209,7 +223,7 @@ public class WeatherserviceApplicationTests {
 
 		response = restTemplate.exchange(
 				createRequestURL("/weatherservice/favourites/"),
-				HttpMethod.POST, postEntity, String.class);
+				HttpMethod.PUT, postEntity, String.class);
 		
 		assert(response.getStatusCode() == HttpStatus.CREATED);
 		
@@ -241,6 +255,18 @@ public class WeatherserviceApplicationTests {
 		JSONAssert.assertEquals(assertString, response.getBody(), false);
 	}
 	
+	@Test
+	public void testGetFavourites() throws JSONException {
+		//dummy favourites are loaded to favourites when server is started
+		String assertString = "[{\"locationName\":\"Oulu\"},{\"locationName\":\"Kärsämäki\"}]";
+ 
+		
+		ResponseEntity<String> response = restTemplate.exchange(
+				createRequestURL("/weatherservice/favourites/"),
+				HttpMethod.GET, entity, String.class);
+		JSONAssert.assertEquals(assertString, response.getBody(), false);
+	}
+	
 	
 	private String createRequestURL(String uri) {
 		return "http://localhost:" +port + uri;
@@ -267,25 +293,6 @@ public class WeatherserviceApplicationTests {
 		}
 		return assertStrings;
 	}
-	/*private List<String> retrieveAsserString(String location, String lang) throws JSONException {
-		ResponseEntity<String> response = restTemplate.exchange(
-				baseUrlFind + location + "&lang="+lang,
-				HttpMethod.GET, entity, String.class);
-		JSONObject assertData = new JSONObject(response.getBody());
-		JSONArray locations = assertData.getJSONArray("list");
-		String assertString = "[";
-		for(int i = 0; i < locations.length() ;i++){
-			String name = locations.getJSONObject(i).getString("name");
-			String temp = locations.getJSONObject(i).getJSONObject("main").get("temp").toString();
-			String desc = locations.getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("description");
-			String country = locations.getJSONObject(i).getJSONObject("sys").get("country").toString();
 
-			String assertString = "{\"locationName\":\""+ name + "\",\"country\":\""+ country +"\",\"temperature\":\""+ temp 
-				+"\",\"description\":\""+ desc + "\"}";
-			assertString += assertString;
-			if()
-		}
-		return assertStrings;
-	}*/
 
 }

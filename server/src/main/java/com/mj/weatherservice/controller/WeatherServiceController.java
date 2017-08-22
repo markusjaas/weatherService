@@ -1,6 +1,8 @@
 package com.mj.weatherservice.controller;
 
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -39,11 +41,17 @@ public class WeatherServiceController {
     
     @RequestMapping(value = "/search/{location}", method = RequestMethod.GET, produces={"application/json"} )
     public ResponseEntity<?> searchWeatherByCityAndLang(@PathVariable("location") String location, @RequestParam(value="lang",required=false) String lang) {
-    	
+    	try {
+			location = URLDecoder.decode(location, "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			return new ResponseEntity<CustomError>(new CustomError("Could not retrieve weather information to location " +
+    				location), HttpStatus.BAD_REQUEST);
+		}
     	if(lang==null){
     		lang = DEFAULT_LANG;
     	}
     	try{
+    		
     		logger.debug("Searching weather information for "+ location);
     		return new ResponseEntity<WeatherResponse>(openWeatherMapService.getWeather(location, lang), HttpStatus.OK);
     	}catch (Exception e) {
@@ -55,7 +63,6 @@ public class WeatherServiceController {
     //All favourite endpoints are desinged to be launched from search results so they should always have correct payload on call
     @RequestMapping(value = "/favourites/", method = RequestMethod.GET, produces={"application/json"} )
     public ResponseEntity<List<Location>> getFavourites() {
-    	
     	return new ResponseEntity<List<Location>>(favouritesService.getFavourites(), HttpStatus.OK);
     }
 
@@ -65,7 +72,7 @@ public class WeatherServiceController {
     	//This is designed to add favourite if it does not exists already.
     	//optionally this could return HttpStatus.CONFLICT if location already exists
     	
-        return new ResponseEntity<Location>(location, HttpStatus.CREATED);
+        return new ResponseEntity<Location>( HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/favourites/", method = RequestMethod.DELETE )
@@ -79,6 +86,6 @@ public class WeatherServiceController {
     public ResponseEntity<Location> deleteFavourite(@PathVariable("location") String locationId, @RequestBody Location location) {
     	favouritesService.deleteFavourite(location);
     	
-        return new ResponseEntity<Location>(location, HttpStatus.OK);
+        return new ResponseEntity<Location>(HttpStatus.NO_CONTENT);
     }
 }
