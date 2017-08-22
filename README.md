@@ -1,8 +1,8 @@
 # weatherService
 
 Steps required to run the weather service. 
-1. clone the repository (git clone https://github.com/markusjaas/weatherService.git)
-2. go to server folder
+1. Clone the repository (git clone https://github.com/markusjaas/weatherService.git)
+2. Go to server folder
 3. Build it (mvn clean package)
 4. Run it (mvn spring-boot:run)
 
@@ -17,7 +17,7 @@ I used https://openweathermap.org/ as the weather source. Api can return multipl
 
 
 Steps required to run the weather service web client. 
-1. go to client folder
+1. Go to client folder
 2. Build it (mvn clean package)
 3. Run it (mvn spring-boot:run)
 
